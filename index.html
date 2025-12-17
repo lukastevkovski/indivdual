@@ -1,1089 +1,520 @@
-    <!DOCTYPE html>
-    <html lang="mk">
-    <head>
+<!DOCTYPE html>
+<html lang="mk">
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Filip Gjorchevski | Strength & Conditioning Coach</title>
-    
-    <!-- Google Fonts - Inter -->
+   
+    <!-- Google Fonts - Montserrat (нов фонт за поинтересен изглед) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-        /* НОВА ПАЛЕТА */
-        --bg-main: #0a0a0a;                  /* body background */
-        --bg-section: #111111;               /* секции */
-        --bg-card: #000000;                  /* header, картички */
-        --gold: #d4af37;                     /* акцент: лого, линии, CTA */
-        --gold-soft: rgba(212, 175, 55, 0.5);/* glow / сенки */
-        --text-main: #ffffff;                /* главен текст */
-        --text-muted: #cccccc;               /* поднаслови, описи */
-
-        /* за да не крши стар код што користи овие */
-        --black: #000000;
-        --white: #0a0a0a;
-        --cream: #111111;
-        --red: #d4af37;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-        font-family: 'Inter', sans-serif;
-        background: var(--bg-main);
-        color: var(--text-main);
-        line-height: 1.6;
-        overflow-x: hidden;
-        }
-
-        /* STICKY HEADER */
-        .sticky-header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1000;
-        background: rgba(0, 0, 0, 0.85);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border-bottom: 1px solid var(--gold-soft);
-        transition: all 0.3s;
-        }
-
-        .sticky-header.scrolled {
-        background: rgba(0, 0, 0, 0.95);
-        backdrop-filter: blur(12px);
-        }
-
-        .nav-container {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 1rem 5%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        }
-
-        .logo {
-        font-size: 1.8rem;
-        font-weight: 900;
-        color: var(--gold);
-        text-decoration: none;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        }
-
-        .desktop-nav {
-        display: flex;
-        gap: 2.5rem;
-        align-items: center;
-        }
-
-        .desktop-nav a {
-        color: var(--text-muted);
-        text-decoration: none;
-        font-weight: 500;
-        font-size: 1.05rem;
-        transition: color 0.3s;
-        opacity: 0.9;
-        }
-
-        .desktop-nav a:hover {
-        color: var(--gold);
-        opacity: 1;
-        }
-
-        .nav-cta {
-        background: var(--gold) !important;
-        color: #000 !important;
-        padding: 0.7rem 1.5rem !important;
-        border-radius: 8px;
-        font-weight: 700 !important;
-        box-shadow: 0 10px 25px var(--gold-soft);
-        }
-
-        /* Mobile */
-        .mobile-toggle {
-        display: none;
-        color: var(--text-main);
-        font-size: 2rem;
-        cursor: pointer;
-        }
-
-        .mobile-menu {
-        display: none;
-        flex-direction: column;
-        background: rgba(0, 0, 0, 0.95);
-        backdrop-filter: blur(10px);
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        padding: 1.5rem 5%;
-        gap: 1.5rem;
-        }
-
-        .mobile-menu a {
-        color: var(--text-main);
-        text-decoration: none;
-        font-size: 1.3rem;
-        font-weight: 500;
-        }
-
-        .mobile-menu.active { display: flex; }
-
-        /* Sticky CTA Button (долу десно) */
-        .sticky-cta {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        background: var(--gold);
-        color: #000;
-        padding: 1rem 1.5rem;
-        border-radius: 50px;
-        font-weight: 700;
-        font-size: 1.1rem;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        box-shadow: 0 10px 30px var(--gold-soft);
-        z-index: 999;
-        transition: all 0.3s;
-        text-decoration: none;
-        }
-
-        .sticky-cta:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 40px var(--gold-soft);
-        }
-
-        .cta-icon {
-        font-size: 1.6rem;
-        }
-
-        /* Responsive NAV + sticky CTA */
-        @media (max-width: 968px) {
-        .desktop-nav { display: none; }
-        .mobile-toggle { display: block; }
-        
-        .sticky-cta {
-            bottom: 20px;
-            right: 20px;
-            padding: 0.9rem 1.3rem;
-            font-size: 1rem;
-        }
-        .cta-text { display: none; }
-        .sticky-cta {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            justify-content: center;
-        }
-        .cta-icon { font-size: 2rem; }
-        }
-
-        /* HERO SECTION */
-        .hero {
-        position: relative;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        overflow: hidden;
-        background: radial-gradient(circle at top, #111111, #000000);
-        }
-
-        .hero-images {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        z-index: 1;
-        }
-
-        .hero-img {
-        flex: 1;
-        background-size: cover;
-        background-position: center;
-        border-radius: 12px;
-        transform: scale(0.9);
-        transition: transform 0.5s;
-        filter: brightness(0.8);
-        }
-
-        .hero-img.center {
-        background: url('./assets/viber_image_2025-11-26_19-25-51-502.jpg') center/cover no-repeat;
-        transform: scale(1);
-        }
-
-        .hero-img.left {
-        background: url('./assets/viber_image_2025-11-26_19-25-46-708.jpg') center/cover no-repeat;
-        }
-
-        .hero-img.right {
-        background: url('./assets/viber_image_2025-11-26_19-25-47-136.jpg') center/cover no-repeat;
-        }
-
-        .hero-text-wrapper {
-        position: absolute;
-        left: 5%;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 3;
-        padding: 20px 30px;
-        background: rgba(0, 0, 0, 0.65);
-        backdrop-filter: blur(6px);
-        border-radius: 12px;
-        border: 1px solid var(--gold-soft);
-        box-shadow: 0 18px 45px rgba(0,0,0,0.7);
-        }
-
-        .hero-text h1,
-        .hero-text p {
-        color: #fff !important;
-        }
-
-        .hero-text {
-        position: relative;
-        z-index: 2;
-        text-align: left;
-        color: #fff;
-        max-width: 500px;
-        margin-left: 5%;
-        text-shadow: 2px 2px 12px rgba(0,0,0,0.8);
-        }
-
-        .hero-text h1 {
-        font-size: clamp(3rem, 8vw, 6rem);
-        font-weight: 900;
-        line-height: 1.1;
-        }
-
-        .hero-text p {
-        font-size: 1.1rem;
-        font-weight: 300;
-        margin-top: 0.8rem;
-        opacity: 0.9;
-        }
-
-        .hero-text .subtitle {
-        font-size: 1rem;
-        font-weight: 500;
-        margin-top: 1rem;
-        color: var(--text-muted);
-        opacity: 0.85;
-        }
-
-        .red-line {
-        width: 100px;
-        height: 4px;
-        background: var(--gold);
-        margin: 1rem 0;
-        }
-
-        /* ABOUT ME SECTION */
-        .about-section {
-        padding: 120px 5%;
-        background: var(--bg-section);
-        color: var(--text-main);
-        }
-
-        .about-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        }
-
-        .section-title {
-        font-size: 4rem;
-        font-weight: 900;
-        margin-bottom: 1rem;
-        color: var(--gold);
-        }
-
-        .about-content {
-        display: grid;
-        grid-template-columns: 1.5fr 1fr;
-        gap: 5rem;
-        align-items: start;
-        }
-
-        .about-text {
-        font-size: 1.05rem;
-        line-height: 1.8;
-        color: var(--text-main);
-        }
-
-        .intro-text {
-        font-size: 1.2rem;
-        font-weight: 500;
-        margin-bottom: 1.5rem;
-        color: var(--text-muted);
-        }
-
-        .about-text p {
-        margin-bottom: 1.5rem;
-        }
-
-        .about-stats {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-        margin-top: 10rem;
-        }
-
-        .stat-card {
-        background: var(--bg-card);
-        padding: 2rem 1.5rem;
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-        text-align: center;
-        transition: transform 0.3s, box-shadow 0.3s;
-        border: 1px solid rgba(255,255,255,0.06);
-        }
-
-        .stat-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px var(--gold-soft);
-        }
-
-        .stat-number {
-        font-size: 3rem;
-        font-weight: 900;
-        color: var(--gold);
-        margin-bottom: 0.5rem;
-        line-height: 1;
-        }
-
-        .stat-label {
-        font-size: 0.95rem;
-        font-weight: 500;
-        color: var(--text-muted);
-        opacity: 0.9;
-        }
-
-        /* TIMELINE SECTION */
-        .timeline-section {
-        padding: 150px 5%;
-        background: var(--bg-main);
-        position: relative;
-        color: var(--text-main);
-        }
-
-        .timeline {
-        max-width: 1100px;
-        margin: 0 auto;
-        position: relative;
-        }
-
-        .timeline::before {
-        content: '';
-        position: absolute;
-        width: 6px;
-        background: var(--bg-card);
-        top: 0;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%) rotate(12deg);
-        box-shadow: 0 0 20px rgba(0,0,0,0.8);
-        }
-
-        .timeline-item {
-        padding: 2rem 0;
-        position: relative;
-        width: 50%;
-        }
-
-        .timeline-item:nth-child(odd) {
-        left: 0;
-        text-align: right;
-        padding-right: 80px;
-        }
-
-        .timeline-item:nth-child(even) {
-        left: 50%;
-        padding-left: 80px;
-        }
-
-        .dot {
-        width: 80px;
-        height: 80px;
-        background: var(--bg-card);
-        color: var(--gold);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2rem;
-        font-weight: 900;
-        position: absolute;
-        top: 30px;
-        border: 2px solid var(--gold);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.8);
-        }
-
-        .timeline-item:nth-child(odd) .dot { right: -20px; }
-        .timeline-item:nth-child(even) .dot { left: -20px; }
-
-        .card {
-        background: var(--bg-section);
-        padding: 2rem;
-        border-radius: 12px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-        border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .card h3 {
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
-        color: var(--gold);
-        }
-
-        .card span {
-        font-size: 0.9rem;
-        opacity: 0.7;
-        color: var(--text-muted);
-        }
-
-        .card p {
-        margin-top: 0.5rem;
-        color: var(--text-main);
-        }
-
-        /* WHY TRAIN WITH FILIP */
-        .why-train {
-        padding: 150px 5%;
-        background: var(--bg-section);
-        color: var(--text-main);
-        }
-
-        .why-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        text-align: center;
-        }
-
-        .section-title-center {
-        font-size: 4rem;
-        font-weight: 900;
-        margin-bottom: 1rem;
-        color: var(--gold);
-        }
-
-        .red-line-center {
-        width: 100px;
-        height: 4px;
-        background: var(--gold);
-        margin: 1rem auto 2rem;
-        }
-
-        .why-subtitle {
-        font-size: 1.3rem;
-        font-weight: 500;
-        opacity: 0.8;
-        margin-bottom: 4rem;
-        color: var(--text-muted);
-        }
-
-        .why-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 2.5rem;
-        text-align: left;
-        }
-
-        .why-card {
-        background: var(--bg-card);
-        padding: 2.5rem;
-        border-radius: 16px;
-        transition: transform 0.3s, box-shadow 0.3s;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        border: 1px solid rgba(255,255,255,0.06);
-        }
-
-        .why-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 50px var(--gold-soft);
-        }
-
-        .why-icon {
-        font-size: 3.5rem;
-        margin-bottom: 1rem;
-        }
-
-        .why-card h3 {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        color: var(--gold);
-        }
-
-        .why-card p {
-        font-size: 1.02rem;
-        line-height: 1.7;
-        color: var(--text-muted);
-        }
-
-        /* TRAINING PACKAGES SECTION */
-        .packages-section {
-        padding: 150px 5%;
-        background: var(--bg-main);
-        color: var(--text-main);
-        }
-
-        /* BOOK A CALL */
-        .book-call {
-        padding: 150px 5%;
-        background: var(--bg-card);
-        color: var(--text-main);
-        }
-
-        .book-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        }
-
-        .book-content {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 5rem;
-        align-items: center;
-        }
-
-        .book-text .section-title {
-        color: var(--gold);
-        }
-
-        .book-intro {
-        font-size: 1.1rem;
-        line-height: 1.8;
-        margin-bottom: 2rem;
-        color: var(--text-muted);
-        }
-
-        .book-benefits {
-        list-style: none;
-        font-size: 1.02rem;
-        line-height: 2;
-        color: var(--text-main);
-        }
-
-        .book-benefits li {
-        opacity: 0.9;
-        }
-
-        .contact-form {
-        background: var(--bg-section);
-        padding: 3rem;
-        border-radius: 16px;
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-        border: 1px solid rgba(255,255,255,0.06);
-        color: var(--text-main);
-        }
-
-        .contact-form input,
-        .contact-form select,
-        .contact-form textarea {
-        padding: 1rem 1.5rem;
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 8px;
-        font-size: 1rem;
-        font-family: 'Inter', sans-serif;
-        background: #000;
-        color: var(--text-main);
-        transition: border 0.3s, box-shadow 0.3s;
-        }
-
-        .contact-form input::placeholder,
-        .contact-form textarea::placeholder {
-        color: var(--text-muted);
-        }
-
-        .contact-form input:focus,
-        .contact-form select:focus,
-        .contact-form textarea:focus {
-        outline: none;
-        border: 1px solid var(--gold);
-        box-shadow: 0 0 0 1px var(--gold-soft);
-        }
-
-        .cta-button {
-        padding: 1.2rem 2rem;
-        background: var(--gold);
-        color: #000;
-        border: none;
-        border-radius: 8px;
-        font-size: 1.1rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: transform 0.3s, box-shadow 0.3s;
-        box-shadow: 0 10px 30px var(--gold-soft);
-        }
-
-        .cta-button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 15px 40px var(--gold-soft);
-        }
-
-        /* FOOTER */
-        footer {
-        background: var(--bg-card);
-        color: var(--text-main);
-        padding: 100px 5% 60px;
-        text-align: center;
-        }
-
-        footer h2 {
-        font-size: 3.5rem;
-        font-weight: 900;
-        margin-bottom: 2rem;
-        color: var(--gold);
-        }
-
-        .footer-content {
-        max-width: 1000px;
-        margin: 4rem auto;
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 4rem;
-        align-items: center;
-        }
-
-        .footer-contact {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-        text-align: left;
-        }
-
-        .contact-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 1.5rem;
-        }
-
-        .contact-icon {
-        font-size: 2rem;
-        opacity: 0.8;
-        }
-
-        .contact-item strong {
-        display: block;
-        font-size: 1.1rem;
-        margin-bottom: 0.3rem;
-        color: var(--gold);
-        }
-
-        .contact-item p {
-        font-size: 1.05rem;
-        opacity: 0.85;
-        line-height: 1.6;
-        color: var(--text-muted);
-        }
-
-        .footer-socials {
-        display: flex;
-        gap: 1.5rem;
-        justify-content: center;
-        align-items: center;
-        }
-
-        .social-link {
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: var(--bg-section);
-        color: var(--text-main);
-        border-radius: 50%;
-        transition: all 0.3s;
-        border: 1px solid rgba(255,255,255,0.06);
-        }
-
-        .social-link:hover {
-        background: var(--gold);
-        color: #000;
-        transform: translateY(-5px);
-        }
-
-        .footer-bottom {
-        margin-top: 4rem;
-        padding-top: 2rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        opacity: 0.6;
-        font-size: 0.9rem;
-        color: var(--text-muted);
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 968px) {
-        .about-content { grid-template-columns: 1fr; gap: 3rem; }
-        .about-stats { grid-template-columns: 1fr 1fr; margin-top: 3rem; }
-        .why-grid { grid-template-columns: 1fr; }
-        .book-content { grid-template-columns: 1fr; gap: 3rem; }
-        
-        .timeline::before { left: 40px; transform: none; }
-        .timeline-item {
-            width: 100%;
-            left: 0 !important;
-            padding-left: 100px;
-            padding-right: 0;
-            text-align: left;
-        }
-        .timeline-item .dot { left: 10px; }
-        .timeline-item:nth-child(even) { padding-left: 100px; }
-        }
-
-        @media (max-width: 600px) {
-        .section-title { font-size: 2.5rem; }
-        .section-title-center { font-size: 2.5rem; }
-        .about-stats { grid-template-columns: 1fr; }
-        .stat-number { font-size: 2.5rem; }
-        
-        .contact-form { padding: 2rem; }
-        
-        .footer-content {
-            grid-template-columns: 1fr;
-            gap: 3rem;
-            text-align: center;
-        }
-        .footer-contact {
-            text-align: center;
-            align-items: center;
-        }
-        .contact-item {
-            flex-direction: column;
-            text-align: center;
-        }
-        footer h2 { font-size: 2.5rem; }
-        }
-    </style>
-    </head>
-    <body>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <!-- AOS за анимации -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
     <!-- STICKY NAV + CTA -->
     <header class="sticky-header">
-    <div class="nav-container">
-        <!-- Logo / Име -->
-        <a href="#" class="logo">
-        From<span> Drill</span> to<span> Game</span>
-        </a>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                From<span> Drill</span> to<span> Game</span>
+            </a>
 
-        <!-- Desktop Menu -->
-        <nav class="desktop-nav">
-        <a href="#about">About Me</a>
-        <a href="#timeline">My Expirience</a>
-        <a href="#packages">Packages</a>
-        <a href="#why">Why me</a>
-        <a href="#contactForm" class="nav-cta">Book a call</a>
-        </nav>
+            <nav class="desktop-nav">
+                <a href="#about">About Me</a>
+                <a href="#why">Why me</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#packages">Packages</a>
+                <a href="#testimonials">Testimonials</a>
+                <a href="#faq">FAQ</a>
+                <a href="#contactForm" class="nav-cta">Book a call</a>
+            </nav>
 
-        <!-- Mobile Menu Toggle -->
-        <div class="mobile-toggle">☰</div>
-    </div>
+            <div class="mobile-toggle">☰</div>
+        </div>
 
-    <!-- Mobile Menu (скриен по default) -->
-    <div class="mobile-menu">
-        <a href="#about">About</a>
-        <a href="#timeline">Кариера</a>
-        <a href="#packages">Пакети</a>
-        <a href="#why">Зошто јас</a>
-        <a href="#contactForm" class="nav-cta">Закажи повик</a>
-    </div>
+        <div class="mobile-menu">
+            <a href="#about">About</a>
+            <a href="#why">Why me</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#packages">Packages</a>
+            <a href="#testimonials">Testimonials</a>
+            <a href="#faq">FAQ</a>
+            <a href="#contactForm" class="nav-cta">Book a call</a>
+        </div>
     </header>
 
-    <!-- Sticky CTA Button (десно долу) -->
     <a href="#contactForm" class="sticky-cta">
-    <span class="cta-text">Book a call</span>
-    <span class="cta-icon">📞</span>
+        <span class="cta-text">Book a call</span>
+        <span class="cta-icon">📞</span>
     </a>
 
-    <!-- HERO -->
-    <section class="hero">
+    <!-- HERO (почетна, привлекува внимание) -->
+    <section class="hero" data-aos="fade-in" data-aos-duration="1500">
         <div class="hero-images">
-        <div class="hero-img left"></div>
-        <div class="hero-img center"></div>
-        <div class="hero-img right"></div>
+            <div class="hero-img left"></div>
+            <div class="hero-img center"></div>
+            <div class="hero-img right"></div>
         </div>
         <div class="hero-text-wrapper">
-        <div class="hero-text">
-            <h1>FILIP<br>GJORCHEVSKI</h1>
-            <div class="red-line"></div>
-            <p>STRENGTH & CONDITIONING COACH<br>UEFA "A" + A FITNESS LICENSE</p>
-            <p class="subtitle"> From<span style="color: var(--gold);"> Drill</span> to<span style="color: var(--gold);"> Game</span></p>
-        </div>
+            <div class="hero-text">
+                <h1>FILIP<br>GJORCHEVSKI</h1>
+                <div class="red-line"></div>
+                <p>STRENGTH & CONDITIONING COACH<br>UEFA "A" + A FITNESS LICENSE</p>
+                <p class="subtitle"> From<span class="highlight"> Drill</span> to<span class="highlight"> Game</span></p>
+            </div>
         </div>
     </section>
 
-    <!-- ABOUT ME SECTION -->
-    <section class="about-section" id="about">
+    <!-- ABOUT ME (кој сум јас, гради доверба) -->
+    <section class="about-section" id="about" data-aos="fade-up" data-aos-duration="1000">
         <div class="about-container">
-        <div class="about-content">
-            <div class="about-text">
-            <h2 class="section-title">About Me</h2>
-            <div class="red-line"></div>
-            <p class="intro-text">
-                A dedicated Strength & Conditioning Coach with over a decade of experience in football, from youth development to professional leagues in Macedonia and Saudi Arabia.
-            </p>
-            <p>
-                My journey began as a player with FC Makedonija Gjorche Petrov (2001–2005), progressing through all youth categories to the senior team. This experience shaped my understanding of what players truly need to excel.
-            </p>
-            <p>
-                Holding a <strong>UEFA "A" License</strong>, <strong>UEFA "A" Football Fitness License</strong>, and a degree in Pedagogy, I combine tactical expertise with sports science and educational psychology to develop complete athletes.
-            </p>
-            <p>
-                My philosophy is simple: <strong>holistic development through data-driven training</strong>. I utilize modern tools like video analysis (Hudl) and GPS systems to optimize performance, prevent injuries, and build mental resilience alongside physical strength.
-            </p>
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="section-title">About Me</h2>
+                    <div class="red-line"></div>
+                    <p class="intro-text">
+                        A dedicated Strength & Conditioning Coach with over a decade of experience in football, from youth development to professional leagues in Macedonia and Saudi Arabia.
+                    </p>
+                    <p>
+                        My journey began as a player with FC Makedonija Gjorche Petrov (2001–2005), progressing through all youth categories to the senior team. This experience shaped my understanding of what players truly need to <span class="highlight">excel</span>.
+                    </p>
+                    <p>
+                        Holding a <strong>UEFA "A" License</strong>, <strong>UEFA "A" Football Fitness License</strong>, and a degree in Pedagogy, I combine tactical expertise with sports science and educational psychology to develop complete athletes.
+                    </p>
+                    <p>
+                        My philosophy is simple: <strong>holistic development through <span class="highlight">data-driven</span> training</strong>. I utilize modern tools like video analysis (Hudl) and GPS systems to optimize performance, prevent injuries, and build mental resilience alongside physical strength.
+                    </p>
+                </div>
+                <div class="about-stats" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="stat-card">
+                        <div class="stat-number">10+</div>
+                        <div class="stat-label">Years of Coaching Experience</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">UEFA A</div>
+                        <div class="stat-label">Licensed Coach & Fitness Specialist</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">2013</div>
+                        <div class="stat-label">Graduate Pedagogue</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">4</div>
+                        <div class="stat-label">Languages Spoken</div>
+                    </div>
+                </div>
             </div>
-            <div class="about-stats">
-            <div class="stat-card">
-                <div class="stat-number">10+</div>
-                <div class="stat-label">Years of Coaching Experience</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">UEFA A</div>
-                <div class="stat-label">Licensed Coach & Fitness Specialist</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">2013</div>
-                <div class="stat-label">Graduate Pedagogue</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">4</div>
-                <div class="stat-label">Languages Spoken</div>
-            </div>
-            </div>
-        </div>
         </div>
     </section>
 
-    <!-- WHY TRAIN WITH FILIP -->
-    <section class="why-train" id="why">
+    <!-- WHY TRAIN WITH ME (зошто да ме избереш, продава бенефиции) -->
+    <section class="why-train" id="why" data-aos="fade-up" data-aos-duration="1000">
         <div class="why-container">
-        <h2 class="section-title-center">Why Train With Me</h2>
-        <div class="red-line-center"></div>
-        <p class="why-subtitle">A professional system built on proven results</p>
-        
-        <div class="why-grid">
-            <div class="why-card">
-            <div class="why-icon">💪</div>
-            <h3>Strength & Explosiveness</h3>
-            <p>Build power and explosive strength through scientifically-backed training programs tailored to football demands.</p>
+            <h2 class="section-title-center">Why Train With Me</h2>
+            <div class="red-line-center"></div>
+            <p class="why-subtitle">A professional system built on proven results</p>
+            
+            <div class="why-grid">
+                <div class="why-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="why-icon">💪</div>
+                    <h3>Strength & <span class="highlight">Explosiveness</span></h3>
+                    <p>Build power and explosive strength through scientifically-backed training programs tailored to football demands.</p>
+                </div>
+                <div class="why-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="why-icon">⚡</div>
+                    <h3>Speed & Agility</h3>
+                    <p>Enhance reaction time, acceleration, and directional changes to <span class="highlight">dominate</span> on the field.</p>
+                </div>
+                <div class="why-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="why-icon">🛡️</div>
+                    <h3>Injury Prevention</h3>
+                    <p>Reduce injury risk through targeted conditioning, mobility work, and proper recovery protocols.</p>
+                </div>
+                <div class="why-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="why-icon">📊</div>
+                    <h3>Personalized Programs</h3>
+                    <p>Individual training plans designed specifically for your position, goals, and current fitness level.</p>
+                </div>
+                <div class="why-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="why-icon">🎯</div>
+                    <h3>Data-Driven Approach</h3>
+                    <p>GPS tracking, video analysis, and performance metrics to monitor progress and <span class="highlight">optimize</span> training.</p>
+                </div>
+                <div class="why-card" data-aos="fade-up" data-aos-delay="600">
+                    <div class="why-icon">🏆</div>
+                    <h3>Proven Results</h3>
+                    <p>15% fitness improvement in one season, 2 championships, and 5 players promoted to professional leagues.</p>
+                </div>
             </div>
-            <div class="why-card">
-            <div class="why-icon">⚡</div>
-            <h3>Speed & Agility</h3>
-            <p>Enhance reaction time, acceleration, and directional changes to dominate on the field.</p>
-            </div>
-            <div class="why-card">
-            <div class="why-icon">🛡️</div>
-            <h3>Injury Prevention</h3>
-            <p>Reduce injury risk through targeted conditioning, mobility work, and proper recovery protocols.</p>
-            </div>
-            <div class="why-card">
-            <div class="why-icon">📊</div>
-            <h3>Personalized Programs</h3>
-            <p>Individual training plans designed specifically for your position, goals, and current fitness level.</p>
-            </div>
-            <div class="why-card">
-            <div class="why-icon">🎯</div>
-            <h3>Data-Driven Approach</h3>
-            <p>GPS tracking, video analysis, and performance metrics to monitor progress and optimize training.</p>
-            </div>
-            <div class="why-card">
-            <div class="why-icon">🏆</div>
-            <h3>Proven Results</h3>
-            <p>15% fitness improvement in one season, 2 championships, and 5 players promoted to professional leagues.</p>
-            </div>
-        </div>
         </div>
     </section>
 
-    <!-- TRAINING PACKAGES SECTION -->
-    <section class="packages-section" id="packages">
-    <div class="why-container">
-        <h2 class="section-title-center">Пакети за Тренинзи</h2>
-        <div class="red-line-center"></div>
-        <p class="why-subtitle" style="margin-bottom: 4rem;">
-        Избери го пакетот кој најмногу ти одговара и започни веднаш
-        </p>
+    <!-- HOW IT WORKS (процесот, гради доверба во системот) -->
+    <section class="how-it-works" id="how-it-works" data-aos="fade-up" data-aos-duration="1000">
+        <div class="why-container">
+            <h2 class="section-title-center">Како Работи Процесот</h2>
+            <div class="red-line-center"></div>
+            <p class="why-subtitle">Од првиот контакт до твојот успех – едноставен и ефективен пат</p>
 
-        <div class="why-grid" style="grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem;">
-        
-        <!-- BASIC PACKAGE -->
-        <div class="why-card" style="text-align: center; padding: 3rem 2rem;">
-            <h3 style="font-size: 1.8rem; margin-bottom: 1rem; color: var(--gold);">Basic</h3>
-            <div style="font-size: 3.5rem; font-weight: 900; color: var(--gold); margin: 1.5rem 0;">
-            3.900<span style="font-size: 1.5rem; color: var(--text-muted);">ден/месец</span>
-            </div>
-            <ul style="list-style: none; text-align: left; margin: 2rem 0; font-size: 1.02rem; line-height: 2.1; color: var(--text-main);">
-            <li>✓ 8 групни тренинзи месечно</li>
-            <li>✓ Програма за дома</li>
-            <li>✓ Пристап до GPS податоци</li>
-            <li>✓ Месечен прогрес извештај</li>
-            <li>✗ Индивидуален план</li>
-            <li>✗ 1-на-1 сесии</li>
-            </ul>
-            <a href="#contactForm" class="cta-button" style="margin-top: auto; display: inline-block;">
-            Избери Basic
-            </a>
-        </div>
+            <div class="steps-grid">
+                <!-- Прв ред -->
+                <div class="step-wrapper">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h3>Закажување Повик</h3>
+                        <p>Контактирај ме преку формата или директно. Ќе закажеме бесплатен 30-минутен повик за да ги разбереме твоите цели.</p>
+                    </div>
 
-        <!-- PRO PACKAGE (НАЈПОПУЛАРЕН) -->
-        <div class="why-card" data-aos="fade-up" style="text-align: center; padding: 3.5rem 2rem; 
-            border: 3px solid var(--gold); position: relative; transform: scale(1.05); box-shadow: 0 10px 30px var(--gold-soft);">
-            <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-                background: var(--gold); color: #000; padding: 6px 20px; border-radius: 30px; font-size: 0.9rem; font-weight: 700;">
-            НАЈБАРАН
-            </div>
-            <h3 style="font-size: 2rem; margin-bottom: 1rem; color: var(--gold);">Pro</h3>
-            <div style="font-size: 4rem; font-weight: 900; color: var(--gold); margin: 1.5rem 0;">
-            7.900<span style="font-size: 1.8rem; color: var(--text-muted);">ден/месец</span>
-            </div>
-            <ul style="list-style: none; text-align: left; margin: 2rem 0; font-size: 1.05rem; line-height: 2.2; color: var(--text-main);">
-            <li>✓ 12 индивидуални или групни тренинзи</li>
-            <li>✓ Целосно персонализиран план</li>
-            <li>✓ GPS + видео анализа</li>
-            <li>✓ Неделен прогрес извештај</li>
-            <li>✓ Приоритетно закажување</li>
-            <li>✓ Нутритивен план</li>
-            </ul>
-            <a href="#contactForm" class="cta-button" style="margin-top: auto; display: inline-block;">
-            Избери Pro
-            </a>
-        </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h3>Земање Податоци</h3>
+                        <p>Ќе ги соберам твоите основни податоци, моментална кондиција и специфични цели за да го прилагодиме планот.</p>
+                    </div>
+                </div>
 
-        <!-- ELITE PACKAGE -->
-        <div class="why-card" style="text-align: center; padding: 3rem 2rem;">
-            <h3 style="font-size: 1.8rem; margin-bottom: 1rem; color: var(--gold);">Elite 1-на-1</h3>
-            <div style="font-size: 3.5rem; font-weight: 900; color: var(--gold); margin: 1.5rem 0;">
-            14.900<span style="font-size: 1.5rem; color: var(--text-muted);">ден/месец</span>
-            </div>
-            <ul style="list-style: none; text-align: left; margin: 2rem 0; font-size: 1.02rem; line-height: 2.1; color: var(--text-main);">
-            <li>✓ Неограничени 1-на-1 сесии</li>
-            <li>✓ Целосен професионален тим</li>
-            <li>✓ GPS, видео + физички тестови</li>
-            <li>✓ Дневен/неделен план</li>
-            <li>✓ 24/7 поддршка (WhatsApp)</li>
-            <li>✓ Соработка со клуб/агент</li>
-            </ul>
-            <a href="#contactForm" class="cta-button" style="margin-top: auto; display: inline-block;">
-            Избери Elite
-            </a>
-        </div>
+                <!-- Стрелка надолу -->
+                <div class="vertical-arrow">↓</div>
 
+                <!-- Втор ред -->
+                <div class="step-wrapper">
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h3>Закажување Тренинг</h3>
+                        <p>Избираме пакет и закажуваме прв тренинг со распоред прилагоден на твојот календар и обврски.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <h3>Специјализирана Програма</h3>
+                        <p>Креирам персонализирана програма со GPS анализа, исхрана и следење на напредокот.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
     </section>
 
-    <!-- BOOK A CALL -->
-    <section class="book-call">
+    <!-- PACKAGES (опции за купување, по процесот) -->
+    <section class="packages-section" id="packages" data-aos="fade-up" data-aos-duration="1000">
+        <div class="why-container">
+            <h2 class="section-title-center">Пакети за Тренинзи</h2>
+            <div class="red-line-center"></div>
+            <p class="why-subtitle" style="margin-bottom: 4rem;">
+                Избери го пакетот кој најмногу ти одговара и започни веднаш
+            </p>
+            <div class="why-grid" style="grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem;">
+                <!-- BASIC PACKAGE -->
+                <div class="why-card" style="text-align: center; padding: 3rem 2rem;" data-aos="zoom-in" data-aos-delay="100">
+                    <h3 style="font-size: 1.8rem; margin-bottom: 1rem; color: var(--gold);">Basic</h3>
+                    <div style="font-size: 3.5rem; font-weight: 900; color: var(--gold); margin: 1.5rem 0;">
+                        3.900<span style="font-size: 1.5rem; color: var(--text-muted);">ден/месец</span>
+                    </div>
+                    <ul style="list-style: none; text-align: left; margin: 2rem 0; font-size: 1.02rem; line-height: 2.1; color: var(--text-main);">
+                        <li>✓ 8 групни тренинзи месечно</li>
+                        <li>✓ Програма за дома</li>
+                        <li>✓ Пристап до GPS податоци</li>
+                        <li>✓ Месечен прогрес извештај</li>
+                        <li>✗ Индивидуален план</li>
+                        <li>✗ 1-на-1 сесии</li>
+                    </ul>
+                    <a href="#contactForm" class="cta-button" style="margin-top: auto; display: inline-block;">
+                        Избери Basic
+                    </a>
+                </div>
+
+                <!-- PRO PACKAGE -->
+                <div class="why-card" style="text-align: center; padding: 3.5rem 2rem; border: 3px solid var(--gold); position: relative; transform: scale(1.05); box-shadow: 0 10px 30px var(--gold-soft);" data-aos="zoom-in" data-aos-delay="200">
+                    <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #000; padding: 6px 20px; border-radius: 30px; font-size: 0.9rem; font-weight: 700;">
+                        НАЈБАРАН
+                    </div>
+                    <h3 style="font-size: 2rem; margin-bottom: 1rem; color: var(--gold);">Pro</h3>
+                    <div style="font-size: 4rem; font-weight: 900; color: var(--gold); margin: 1.5rem 0;">
+                        7.900<span style="font-size: 1.8rem; color: var(--text-muted);">ден/месец</span>
+                    </div>
+                    <ul style="list-style: none; text-align: left; margin: 2rem 0; font-size: 1.05rem; line-height: 2.2; color: var(--text-main);">
+                        <li>✓ 12 индивидуални или групни тренинзи</li>
+                        <li>✓ Целосно персонализиран план</li>
+                        <li>✓ GPS + видео анализа</li>
+                        <li>✓ Неделен прогрес извештај</li>
+                        <li>✓ Приоритетно закажување</li>
+                        <li>✓ Нутритивен план</li>
+                    </ul>
+                    <a href="#contactForm" class="cta-button" style="margin-top: auto; display: inline-block;">
+                        Избери Pro
+                    </a>
+                </div>
+
+                <!-- ELITE PACKAGE -->
+                <div class="why-card" style="text-align: center; padding: 3rem 2rem;" data-aos="zoom-in" data-aos-delay="300">
+                    <h3 style="font-size: 1.8rem; margin-bottom: 1rem; color: var(--gold);">Elite 1-на-1</h3>
+                    <div style="font-size: 3.5rem; font-weight: 900; color: var(--gold); margin: 1.5rem 0;">
+                        14.900<span style="font-size: 1.5rem; color: var(--text-muted);">ден/месец</span>
+                    </div>
+                    <ul style="list-style: none; text-align: left; margin: 2rem 0; font-size: 1.02rem; line-height: 2.1; color: var(--text-main);">
+                        <li>✓ Неограничени 1-на-1 сесии</li>
+                        <li>✓ Целосен професионален тим</li>
+                        <li>✓ GPS, видео + физички тестови</li>
+                        <li>✓ Дневен/неделен план</li>
+                        <li>✓ 24/7 поддршка (WhatsApp)</li>
+                        <li>✓ Соработка со клуб/агент</li>
+                    </ul>
+                    <a href="#contactForm" class="cta-button" style="margin-top: auto; display: inline-block;">
+                        Избери Elite
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS (доказ за успех, по опциите) -->
+    <section class="testimonials-section" id="testimonials" data-aos="fade-up" data-aos-duration="1000">
+        <div class="testimonials-container">
+            <h2 class="section-title-center">What Players Say</h2>
+            <div class="red-line-center"></div>
+            <p class="why-subtitle">Real results from real athletes</p>
+            
+            <div class="testimonials-wrapper">
+                <!-- Slide 1 -->
+                <div class="testimonial-slide active">
+                    <div class="testimonial-grid">
+                        <div class="testimonial-card" data-aos="fade-right" data-aos-delay="100">
+                            <div class="testimonial-image">
+                                <img src="./assets/viber_image_2025-11-26_19-25-51-502.jpg" alt="Player">
+                                <div class="quote-icon">"</div>
+                            </div>
+                            <div class="testimonial-text">
+                                <p class="testimonial-quote">"Filip's training transformed my game completely. My speed and <span class="highlight">explosiveness</span> increased dramatically, and I finally got the call-up to the first team."</p>
+                                <div class="testimonial-author">
+                                    <h4>Марко Стојановски</h4>
+                                    <span>Midfielder | FC Vardar</span>
+                                    <div class="rating">⭐⭐⭐⭐⭐</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card" data-aos="fade-left" data-aos-delay="200">
+                            <div class="testimonial-image">
+                                <img src="./assets/viber_image_2025-11-26_19-25-51-502.jpg" alt="Player">
+                                <div class="quote-icon">"</div>
+                            </div>
+                            <div class="testimonial-text">
+                                <p class="testimonial-quote">"Working with Filip was a game-changer. The injury prevention program kept me on the field all season, and my performance metrics improved by <span class="highlight">20%</span>."</p>
+                                <div class="testimonial-author">
+                                    <h4>Давид Петровски</h4>
+                                    <span>Striker | FK Pelister</span>
+                                    <div class="rating">⭐⭐⭐⭐⭐</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="testimonial-slide">
+                    <div class="testimonial-grid">
+                        <div class="testimonial-card">
+                            <div class="testimonial-image">
+                                <img src="./assets/viber_image_2025-11-26_19-25-51-502.jpg" alt="Player">
+                                <div class="quote-icon">"</div>
+                            </div>
+                            <div class="testimonial-text">
+                                <p class="testimonial-quote">"Best investment in my career. Filip's personalized training plan helped me secure a professional contract abroad."</p>
+                                <div class="testimonial-author">
+                                    <h4>Александар Николов</h4>
+                                    <span>Defender | Al-Nassr FC</span>
+                                    <div class="rating">⭐⭐⭐⭐⭐</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <div class="testimonial-image">
+                                <img src="./assets/viber_image_2025-11-26_19-25-51-502.jpg" alt="Player">
+                                <div class="quote-icon">"</div>
+                            </div>
+                            <div class="testimonial-text">
+                                <p class="testimonial-quote">"Filip doesn't just train your body, he develops your mind too. The mental <span class="highlight">resilience</span> techniques were crucial during our championship run."</p>
+                                <div class="testimonial-author">
+                                    <h4>Стефан Димитриевски</h4>
+                                    <span>Goalkeeper | FK Rabotnichki</span>
+                                    <div class="rating">⭐⭐⭐⭐⭐</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="testimonial-slide">
+                    <div class="testimonial-grid">
+                        <div class="testimonial-card">
+                            <div class="testimonial-image">
+                                <img src="./assets/viber_image_2025-11-26_19-25-51-502.jpg" alt="Player">
+                                <div class="quote-icon">"</div>
+                            </div>
+                            <div class="testimonial-text">
+                                <p class="testimonial-quote">"The GPS tracking and data analysis opened my eyes to areas I needed to improve. Filip's scientific approach gave me a real competitive edge."</p>
+                                <div class="testimonial-author">
+                                    <h4>Никола Јовановски</h4>
+                                    <span>Winger | FK Shkupi</span>
+                                    <div class="rating">⭐⭐⭐⭐⭐</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <div class="testimonial-image">
+                                <img src="./assets/viber_image_2025-11-26_19-25-51-502.jpg" alt="Player">
+                                <div class="quote-icon">"</div>
+                            </div>
+                            <div class="testimonial-text">
+                                <p class="testimonial-quote">"After years of recurring injuries, Filip's conditioning program finally got me back to 100%. His holistic approach is what every player needs."</p>
+                                <div class="testimonial-author">
+                                    <h4>Горан Милевски</h4>
+                                    <span>Centre-back | FC Sileks</span>
+                                    <div class="rating">⭐⭐⭐⭐⭐</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-dots">
+                <span class="dot active" data-index="0"></span>
+                <span class="dot" data-index="1"></span>
+                <span class="dot" data-index="2"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ (одговори на прашања, намалува сомнежи) -->
+    <section class="faq-section" id="faq" data-aos="fade-up" data-aos-duration="1000">
+        <div class="why-container">
+            <h2 class="section-title-center">Најчесто Поставувани Прашања</h2>
+            <div class="red-line-center"></div>
+            <p class="why-subtitle">Сè што треба да знаеш пред да започнеш</p>
+
+            <div class="faq-grid">
+                <details class="faq-item" data-aos="fade-up" data-aos-delay="100">
+                    <summary>Колку често се одржуваат тренинзите?</summary>
+                    <p>Зависи од избраниот пакет – од 8 до неограничени сесии месечно. Индивидуалните тренинзи се закажуваат според твојот распоред.</p>
+                </details>
+
+                <details class="faq-item" data-aos="fade-up" data-aos-delay="200">
+                    <summary>Дали ми треба опрема?</summary>
+                    <p>Само спортска облека и патики. Сета друга опрема (GPS, тегови, конуси) ја обезбедувам јас.</p>
+                </details>
+
+                <details class="faq-item" data-aos="fade-up" data-aos-delay="300">
+                    <summary>Може ли да тренирам ако сум повреден?</summary>
+                    <p>Да! Имам искуство со рехабилитација и програми за враќање по повреда. Соработувам со физиотерапевти кога е потребно.</p>
+                </details>
+
+                <details class="faq-item" data-aos="fade-up" data-aos-delay="400">
+                    <summary>Дали има пробен тренинг?</summary>
+                    <p>Да, првиот тренинг е бесплатен за да видиш дали стилот ми одговара.</p>
+                </details>
+
+                <details class="faq-item" data-aos="fade-up" data-aos-delay="500">
+                    <summary>Како се мери напредокот?</summary>
+                    <p>Користам GPS (Catapult), видео анализа (Hudl), физички тестови и неделни/месечни извештаи.</p>
+                </details>
+
+                <details class="faq-item" data-aos="fade-up" data-aos-delay="600">
+                    <summary>Дали работиш со млади играчи?</summary>
+                    <p>Да, работам со играчи од 14 години нагоре – од академии до професионалци.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- BOOK A CALL (повик за акција, на крај) -->
+    <section class="book-call" data-aos="fade-up" data-aos-duration="1000">
         <div class="book-container">
-        <div class="book-content">
-            <div class="book-text">
-            <h2 class="section-title">Ready to Elevate Your Game?</h2>
-            <div class="red-line"></div>
-            <p class="book-intro">Let's discuss your goals and create a personalized training plan that takes your performance to the next level.</p>
-            <ul class="book-benefits">
-                <li>✓ Free 30-minute consultation</li>
-                <li>✓ Personalized assessment</li>
-                <li>✓ Custom training roadmap</li>
-                <li>✓ Flexible scheduling</li>
-            </ul>
+            <div class="book-content">
+                <div class="book-text">
+                    <h2 class="section-title">Ready to <span class="highlight">Elevate</span> Your Game?</h2>
+                    <div class="red-line"></div>
+                    <p class="book-intro">Let's discuss your goals and create a personalized training plan that takes your performance to the next level.</p>
+                    <ul class="book-benefits">
+                        <li>✓ Free 30-minute consultation</li>
+                        <li>✓ Personalized assessment</li>
+                        <li>✓ Custom training roadmap</li>
+                        <li>✓ Flexible scheduling</li>
+                    </ul>
+                </div>
+                <div class="book-form-wrapper">
+                    <form class="contact-form" id="contactForm">
+                        <input type="text" placeholder="Your Name" required>
+                        <input type="email" placeholder="Email Address" required>
+                        <input type="tel" placeholder="Phone Number" required>
+                        <select required>
+                            <option value="">Select Training Type</option>
+                            <option value="individual">Individual Training</option>
+                            <option value="team">Team Training</option>
+                            <option value="consultation">Consultation Only</option>
+                        </select>
+                        <textarea placeholder="Tell me about your goals..." rows="4" required></textarea>
+                        <button type="submit" class="cta-button">Book Your Free Consultation</button>
+                    </form>
+                </div>
             </div>
-            <div class="book-form-wrapper">
-            <form class="contact-form" id="contactForm">
-                <input type="text" placeholder="Your Name" required>
-                <input type="email" placeholder="Email Address" required>
-                <input type="tel" placeholder="Phone Number" required>
-                <select required>
-                <option value="">Select Training Type</option>
-                <option value="individual">Individual Training</option>
-                <option value="team">Team Training</option>
-                <option value="consultation">Consultation Only</option>
-                </select>
-                <textarea placeholder="Tell me about your goals..." rows="4" required></textarea>
-                <button type="submit" class="cta-button">Book Your Free Consultation</button>
-            </form>
-            </div>
-        </div>
         </div>
     </section>
 
     <!-- FOOTER -->
-    <footer>
+    <footer data-aos="fade-up" data-aos-duration="800">
         <h2>LET'S CONNECT</h2>
         <div class="red-line-center"></div>
         
         <div class="footer-content">
-        <div class="footer-contact">
-            <div class="contact-item">
-            <span class="contact-icon">📍</span>
-            <div>
-                <strong>Location</strong>
-                <p>Street 20, No. 73<br>Skopje, Macedonia</p>
+            <div class="footer-contact">
+                <div class="contact-item">
+                    <span class="contact-icon">📍</span>
+                    <div>
+                        <strong>Location</strong>
+                        <p>Street 20, No. 73<br>Skopje, Macedonia</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">📞</span>
+                    <div>
+                        <strong>Phone</strong>
+                        <p>+389 72 225 058</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">✉️</span>
+                    <div>
+                        <strong>Email</strong>
+                        <p>ficoamzo.fa@gmail.com</p>
+                    </div>
+                </div>
             </div>
-            </div>
-            <div class="contact-item">
-            <span class="contact-icon">📞</span>
-            <div>
-                <strong>Phone</strong>
-                <p>+389 72 225 058</p>
-            </div>
-            </div>
-            <div class="contact-item">
-            <span class="contact-icon">✉️</span>
-            <div>
-                <strong>Email</strong>
-                <p>ficoamzo.fa@gmail.com</p>
-            </div>
+            <div class="footer-socials">
+                <a href="#" aria-label="Instagram" class="social-link">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <a href="#" aria-label="Facebook" class="social-link">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </a>
+                <a href="#" aria-label="TikTok" class="social-link">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                </a>
             </div>
         </div>
-
-        <div class="footer-socials">
-            <a href="#" aria-label="Instagram" class="social-link">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-            </svg>
-            </a>
-            <a href="#" aria-label="Facebook" class="social-link">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-            </svg>
-            </a>
-            <a href="#" aria-label="TikTok" class="social-link">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
-            </svg>
-            </a>
-        </div>
-        </div>
-
         <p class="footer-bottom">© 2025 Filip Gjorchevski. All rights reserved.</p>
     </footer>
 
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-    // Mobile menu toggle
-    const mobileToggle = document.querySelector('.mobile-toggle');
-    const mobileMenu = document.querySelector('.mobile-menu');
-
-    mobileToggle.addEventListener('click', () => {
-        mobileMenu.classList.toggle('active');
-    });
-
-    mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-        mobileMenu.classList.remove('active');
-        });
-    });
+        AOS.init();
     </script>
 
-    </body>
-    </html>
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
