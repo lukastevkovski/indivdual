@@ -42,3 +42,42 @@ dots.forEach(dot => {
         showSlide(currentSlide);
     });
 });
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector(".contact-form");
+  if (!form) return;
+
+  const success = form.querySelector(".form-success");
+  const error = form.querySelector(".form-error");
+  const button = form.querySelector(".cta-button");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    success.style.display = "none";
+    error.style.display = "none";
+
+    const originalText = button.textContent;
+    button.disabled = true;
+    button.textContent = "Sending...";
+
+    try {
+      const res = await fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { "Accept": "application/json" }
+      });
+
+      if (res.ok) {
+        form.reset();
+        success.style.display = "block";
+      } else {
+        error.style.display = "block";
+      }
+    } catch (err) {
+      error.style.display = "block";
+    } finally {
+      button.disabled = false;
+      button.textContent = originalText;
+    }
+  });
+});
