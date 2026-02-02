@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://fromdrilltothegame.com/</loc>
+    <lastmod>2026-02-02</lastmod>  <!-- смени на денешна дата -->
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <!-- ако сакаш можеш да додадеш и другите anchor-и, но не е задолжително -->
+</urlset>
